@@ -11,6 +11,7 @@ import Json.Decode as Json
 import Request exposing (Request)
 import Time
 import Browser.Events
+import Json.Decode
 
 type alias Flags =
     Json.Value
@@ -23,10 +24,19 @@ type alias Model =
 type Msg
     = NoOp | Resize Int Int
 
+flagsDecoder: Json.Decode.Decoder Model
+flagsDecoder = Json.map2 Model (Json.Decode.field "height" Json.int) (Json.Decode.field "width" Json.int)
 
 init : Request -> Flags -> ( Model, Cmd Msg )
-init _ _ =
-    ( {height= 0, width = 0}, Cmd.none )
+init _ flags =
+    ( case Json.decodeValue flagsDecoder flags of
+        Err a ->
+            { height = 0, width = 0 }
+
+        Ok a ->
+            a
+    , Cmd.none
+    )
 
 
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )

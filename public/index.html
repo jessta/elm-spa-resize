@@ -6,6 +6,13 @@
 </head>
 <body>
   <script src="/dist/elm.js"></script>
-  <script> Elm.Main.init() </script>
+  <script> 
+  Elm.Main.init({
+    flags: {
+      height: window.innerHeight, 
+      width: window.innerWidth
+    }
+  });
+  </script>
 </body>
 </html>
