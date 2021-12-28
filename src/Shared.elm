@@ -17,23 +17,22 @@ type alias Flags =
 
 
 type alias Model =
-    {}
+    {height: Int, width: Int}
 
 
 type Msg
-    = NoOp | Tick Time.Posix | Resize Int Int
+    = NoOp | Resize Int Int
 
 
 init : Request -> Flags -> ( Model, Cmd Msg )
 init _ _ =
-    ( {}, Cmd.none )
+    ( {height= 0, width = 0}, Cmd.none )
 
 
 update : Request -> Msg -> Model -> ( Model, Cmd Msg )
 update _ msg model =
     case msg of
-        Tick t -> Debug.log "pizza" (model, Cmd.none)
-        Resize x y -> Debug.log "resize" (model, Cmd.none)
+        Resize width height -> ({model | height = height, width = width}, Cmd.none)
         NoOp ->
             ( model, Cmd.none )
 
